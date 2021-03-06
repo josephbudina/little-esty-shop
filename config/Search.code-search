@@ -1,0 +1,19 @@
+# Query: bulk_discounts_path
+# ContextLines: 1
+
+3 results - 3 files
+
+app/views/dashboard/index.html.erb:
+  3  <section id="links">
+  4:   <%= link_to "Bulk Discounts", merchant_bulk_discounts_path, method: :get %>
+  5    <%= link_to "My Items", merchant_items_path(@merchant), method: :get %>
+
+spec/features/merchant_dashboard_spec.rb:
+  96        click_link('Bulk Discounts')
+  97:       expect(current_path).to eq(merchant_bulk_discounts_path)
+  98      end
+
+spec/features/bulk_discounts/index_spec.rb:
+  42    it 'Has all discounts as links and attributes' do
+  43:     visit merchant_bulk_discounts_path
+  44  

@@ -2,6 +2,6 @@
 <div id="bulk_discount-<%= discount.id %>">
   <%= discount.percentage_discount %>
   <%= discount.threshold %>
-  <%= link_to "View This Discount", bulk_discount_path(discount), method: :get %>
+  <%= link_to "View This Discount", merchant_bulk_discount_path(@merchant, discount), method: :get %>
 </div>
 <% end %>
