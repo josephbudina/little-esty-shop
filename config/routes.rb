@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   end
 
   resources :repos, only: [:index]
+  resources :bulk_discounts, only: [:index, :show]
 end

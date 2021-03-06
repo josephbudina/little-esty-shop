@@ -33,6 +33,10 @@ RSpec.describe "Merchant Dashboard" do
     @invoice_item_3 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_3.id, status: 1)
     @invoice_item_4 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_4.id, status: 2)
     @invoice_item_5 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_5.id, status: 0)
+
+    @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 10)
+    @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 10)
+    @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 10)
   end
 
   describe "When I visit my merchant dashboard (/merchant/merchant_id/dashboard)" do
@@ -84,15 +88,13 @@ RSpec.describe "Merchant Dashboard" do
       end
     end
 
-    # it "orders the invoices by created at date from oldest to newest" do
-    #   visit "/merchant/#{@merchant1.id}/dashboard"
-    #
-    #   within "#items-ready-to-ship" do
-    #     that = "#{@item1.name} - Invoice##{@invoice_1.id} - #{@invoice_1.date_format}"
-    #     this = "#{@item2.name} - Invoice##{@invoice_3.id} - #{@invoice_3.date_format}"
-    #
-    #     this.should appear_before(that)
-    #   end
-    # end
+    it 'displays link to all discounts' do
+      visit  merchant_dashboard_index_path(@merchant1)
+
+      expect(page).to have_link("Bulk Discounts")
+
+      click_link('Bulk Discounts')
+      expect(current_path).to eq(bulk_discounts_path)
+    end
   end
 end
