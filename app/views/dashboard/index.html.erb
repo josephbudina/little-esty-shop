@@ -1,6 +1,7 @@
 <h1><%= @merchant.name %></h1>
 
 <section id="links">
+  <%= link_to "Bulk Discounts", bulk_discounts_path, method: :get %>
   <%= link_to "My Items", merchant_items_path(@merchant), method: :get %>
   <%= link_to "My Invoices", merchant_invoices_path(@merchant), method: :get %>
 </section>

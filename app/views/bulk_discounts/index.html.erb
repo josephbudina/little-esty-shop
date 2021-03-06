@@ -1,0 +1,7 @@
+<% @bulk_discounts.each do |discount| %>
+<div id="bulk_discount-<%= discount.id %>">
+  <%= discount.percentage_discount %>
+  <%= discount.threshold %>
+  <%= link_to "View This Discount", bulk_discount_path(discount), method: :get %>
+</div>
+<% end %>
