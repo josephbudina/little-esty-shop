@@ -1,2 +1,3 @@
 Percentage Discount: <%= @bulk_discount.percentage_discount %>
 Quantity Threshold: <%= @bulk_discount.threshold %>
+<%= link_to "Update Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount), method: :get %>

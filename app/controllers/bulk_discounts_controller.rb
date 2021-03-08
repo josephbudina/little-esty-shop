@@ -12,6 +12,10 @@ class BulkDiscountsController < ApplicationController
   def new
   end
 
+  def edit
+    @bulk_discount = BulkDiscount.find(params[:id])
+  end
+
   def create
     @bulk_discount = @merchant.bulk_discounts.new(bulk_params)
     if @bulk_discount.valid?
