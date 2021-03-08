@@ -60,6 +60,35 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe "instance methods" do
+    describe '#bulk_discount_application' do
+      it 'applys bulk discount to items' do
+        @merchant1 = create(:merchant)
+  
+        @item1 = create(:item, merchant_id: @merchant1.id)
+        @item2 = create(:item, merchant_id: @merchant1.id)
+        @item8 = create(:item, merchant_id: @merchant1.id)
+      
+      
+        @customers = []
+        15.times {@customers << create(:customer)}
+        @customers.each do |customer|
+          create(:invoice, customer_id: customer.id)
+        end
+      
+        @invoice_1 = @customers.first.invoices.first
+        @invoice_2 = @customers.second.invoices.first
+
+        @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
+        @invoice_item_2 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_2.id, status: 0, quantity: 12, unit_price: 60.54)
+        @invoice_item_10 = create(:invoice_item, item_id: @item8.id, invoice_id: @invoice_1.id, status: 0, quantity: 1, unit_price: 90.7)
+      
+        @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+        @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+        @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+        expect(@invoice1.apply_discount).to eq(53.0)
+      end
+    end
+
     describe "#date_format" do
       it "returns the created_at attribute in string formatted properties ex Monday, July 18, 2019" do
         invoice = @customer1.invoices.create(status: 0,created_at: Time.new(2019, 07, 18))
