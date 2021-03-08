@@ -40,13 +40,15 @@ RSpec.describe "Bulk Discounts Index" do
   end
 
   it 'updates bulk discount' do
-    visit merchant_bulk_discount_path(@merchant1, @bulk_discount_1)
+    visit edit_merchant_bulk_discount_path(@merchant1, @bulk_discount_1)
 
     fill_in 'Percentage of Discount', with: 30
     fill_in 'Discount Threshold', with: 15
-
     click_on 'Submit'
 
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discount_1))
+
+    expect(page).to have_content("Percentage Discount: 30")
+    expect(page).to have_content("Quantity Threshold: 15")
   end
 end
