@@ -5,5 +5,11 @@ class ApiService
     end
     data = response.body
     json = JSON.parse(data, symbolize_names: true)
-  end 
+  end
+
+  def get_holiday_data(endpoint)
+    response = Faraday.get(endpoint)
+    data = response.body
+    json = JSON.parse(data, symbolize_names: true)
+  end
 end

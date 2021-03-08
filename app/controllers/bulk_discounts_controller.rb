@@ -2,6 +2,7 @@ class BulkDiscountsController < ApplicationController
   before_action :find_merchant
 
   def index
+    @holidays = HolidayService.new.holiday_objs
     @bulk_discounts = @merchant.bulk_discounts
   end
   
