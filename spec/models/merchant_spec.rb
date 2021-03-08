@@ -60,6 +60,10 @@ RSpec.describe Merchant, type: :model do
     @invoice_item_8 = create(:invoice_item, item_id: @item6.id, invoice_id: @invoice_8.id, status: 0, quantity: 400, unit_price: 90.7)
     @invoice_item_9 = create(:invoice_item, item_id: @item7.id, invoice_id: @invoice_9.id, status: 0, quantity: 185, unit_price: 90.7)
     @invoice_item_10 = create(:invoice_item, item_id: @item8.id, invoice_id: @invoice_11.id, status: 0, quantity: 1, unit_price: 90.7)
+
+    @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+    @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+    @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
   end
 
   describe "relationships" do
@@ -100,6 +104,12 @@ RSpec.describe Merchant, type: :model do
       it 'totals revenue for merchant' do
         expect(@merchant1.total_revenue).to eq(6820.68)
         expect(@merchant1.invoice_items.calculate_revenue).to eq(6820.68)
+      end
+    end
+
+    describe '#bulk_discount_application' do
+      it 'applys bulk discount to items' do
+        expect(@merchant1.apply_bulk_discount[0]).to eq(53.0)
       end
     end
 
