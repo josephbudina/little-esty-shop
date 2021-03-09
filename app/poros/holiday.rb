@@ -1,6 +1,6 @@
 class Holiday
   attr_reader :name,
-              :data
+              :date
 
   def initialize(repo_data)
     @name = repo_data[:name]

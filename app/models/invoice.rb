@@ -23,4 +23,30 @@ class Invoice < ApplicationRecord
   def status_format
     status.titleize
   end
+
+  def apply_discount
+    invoice_items.joins(:bulk_discounts)
+    .where('invoice_items.quantity >= bulk_discounts.threshold')
+    .select('invoice_items.*, (bulk_discounts.percentage_discount * invoice_items.quantity * invoice_items.unit_price) as discount_amount')
+    .order('bulk_discounts.percentage_discount')
+  end
+
+  def find_discount(id)
+    if apply_discount.where(id: id).empty?
+      0
+    else
+      discount = apply_discount
+      .where(id: id)
+      .first
+      .discount_amount
+      (discount / 100)
+    end
+  end
+
+  def discount_revenue
+    discount = invoice_items.ids.sum do |id|
+    find_discount(id)
+    end
+    (total_revenue - discount)
+  end
 end
