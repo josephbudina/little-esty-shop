@@ -29,6 +29,7 @@
           <td><%= form_with url: "/merchant/#{@merchant.id}/invoice_items/#{invoice_item.id}", method: :patch do |form|  %>
             <%= form.select :status, ["Pending", "Packaged", "Shipped"], selected: "#{invoice_item.status.titleize}" %>
             <%= form.button "Update Item Status" %>
+            <%= link_to "Discount", merchant_bulk_discount_path(@merchant, @bulk_discount)%>
           <% end %></td>
         </tr>
     <% end %>
