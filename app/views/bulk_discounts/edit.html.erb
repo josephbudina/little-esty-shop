@@ -1,7 +1,17 @@
+<section class="headers">
+<h1>Update Discount Number: <%= @bulk_discount.id %></h1>
+</section>
+
+<section class="submit-form">
 <%= form_with url: merchant_bulk_discount_path(@merchant, @bulk_discount), method: :patch, local: true do |f| %>
-<%= f.label :percentage_discount, "Percentage of Discount"%>
+<div class="github-stats">
+  <p><%= f.label :percentage_discount, "Percentage of Discount"%></p>
+<div/>
 <%= f.text_field :percentage_discount, value: @bulk_discount.percentage_discount %>
-<%= f.label :threshold, "Discount Threshold"%>
+<div class="github-stats">
+  <p><%= f.label :threshold, "Discount Threshold"%></p>
+<div/>
 <%= f.text_field :threshold, value: @bulk_discount.threshold %>
-<%= f.submit 'Submit' %>
+<p><%= f.submit 'Submit' %></p>
 <% end %>
+</section>

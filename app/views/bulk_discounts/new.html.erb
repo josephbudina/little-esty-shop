@@ -1,7 +1,17 @@
-<%= form_with url: merchant_bulk_discounts_path(@merchant), method: :post, local: true do |f| %>
-<%= f.label :percentage_discount, "Percentage of Discount"%>
-<%= f.text_field :percentage_discount %>
-<%= f.label :threshold, "Discount Threshold"%>
-<%= f.text_field :threshold %>
-<%= f.submit 'Submit' %>
-<% end %>
+<section class="headers">
+<h1>Create a New Discount</h1>
+</section>
+
+<section class="submit-form">
+  <%= form_with url: merchant_bulk_discounts_path(@merchant), method: :post, local: true do |f| %>
+  <div class="github-stats">
+    <p><%= f.label :percentage_discount, "Percentage of Discount"%></p>
+  <div/>
+  <%= f.text_field :percentage_discount %>
+  <div class="github-stats">
+    <p><%= f.label :threshold, "Discount Threshold"%></p>
+  <div/>
+  <%= f.text_field :threshold %>
+  <p><%= f.submit 'Submit' %></p>
+  <% end %>
+</section>

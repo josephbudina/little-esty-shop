@@ -15,13 +15,42 @@
  */
 
 .github-stats {
-  color: rgb(111, 77, 75);
+  color: #f2f2f2;
   font-family: "courier", sans-serif;
   font-size: 20px;
+}
 
+.headers {
+  color: #f2f2f2;
+  font-family: "courier", sans-serif;
+  font-size: 40px;
 }
 
 body {
-  background-color: lightsalmon;
+  background-color: rgb(91, 87, 119);
   font-family: "courier", sans-serif;
+}
+
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding:14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  bacground-color: #4CAF50;
+  color: white;
 }

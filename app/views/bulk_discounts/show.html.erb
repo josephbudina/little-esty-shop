@@ -1,3 +1,12 @@
-Percentage Discount: <%= @bulk_discount.percentage_discount %>
-Quantity Threshold: <%= @bulk_discount.threshold %>
+<section class="topnav">
 <%= link_to "Update Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount), method: :get %>
+</section>
+
+<section class="headers">
+<h1>Discount ID:<%= @bulk_discount.id %><h1>
+</section>
+
+<section class="github-stats">
+  <p>Percentage Discount: <%= @bulk_discount.percentage_discount %></p>
+  <p>Quantity Threshold: <%= @bulk_discount.threshold %></p>
+<section>
