@@ -1,5 +1,5 @@
 # Little Esty Shop
-
+Data Base Schema: https://app.dbdesigner.net/designer/schema/0-little-esty
 ## About This Project
 
 https://app.dbdesigner.net/designer/schema/396241
