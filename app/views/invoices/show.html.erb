@@ -32,6 +32,7 @@
           <td><%= form_with url: "/merchant/#{@merchant.id}/invoice_items/#{invoice_item.id}", method: :patch do |form|  %>
             <%= form.select :status, ["Pending", "Packaged", "Shipped"], selected: "#{invoice_item.status.titleize}" %>
             <%= form.button "Update Item Status" %>
+            <%= render partial: invoice_item.applied_discount, locals: { bulk_discount: invoice_item.applied } %>
           <% end %></td>
         </tr>
     <% end %>

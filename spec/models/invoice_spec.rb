@@ -76,7 +76,7 @@ RSpec.describe Invoice, type: :model do
         @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
         @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
 
-        expect(@invoice_1.apply_discount.uniq).to eq([@invoice_item_1, @invoice_item_2, @invoice_item_3])
+        expect(@invoice_1.apply_discount.uniq).to eq([@invoice_item_3, @invoice_item_2, @invoice_item_1])
       end
 
       it 'finds_discount' do
@@ -93,7 +93,7 @@ RSpec.describe Invoice, type: :model do
         @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 3)
         @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
         expect(@invoice_1.find_discount(@invoice_item_3.id)).to eq(0)
-        expect(@invoice_1.find_discount(@invoice_item_1.id)).to eq(50.0)
+        expect(@invoice_1.find_discount(@invoice_item_1.id)).to eq(75.0)
       end
 
       it 'finds discount revenue' do
@@ -111,7 +111,7 @@ RSpec.describe Invoice, type: :model do
         @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
         @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
 
-        expect(@invoice_1.discount_revenue).to eq(1506.784)
+        expect(@invoice_1.discount_revenue).to eq(1155.088)
       end
     end
 

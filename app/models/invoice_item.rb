@@ -11,4 +11,21 @@ class InvoiceItem < ApplicationRecord
   def self.calculate_revenue
    sum("invoice_items.unit_price * invoice_items.quantity")
   end
+
+  def applied
+    if invoice.get_discount.ids.include?(id)
+      discount_id = invoice.get_discount.find(id).discount_id
+      discount = BulkDiscount.find(discount_id)
+    else
+      nil
+    end
+  end
+
+  def applied_discount
+    if applied != nil
+      "discount_link"
+    else
+      "no_discount"
+    end
+  end
 end

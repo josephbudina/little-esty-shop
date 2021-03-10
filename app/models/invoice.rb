@@ -28,9 +28,16 @@ class Invoice < ApplicationRecord
     invoice_items.joins(:bulk_discounts)
     .where('invoice_items.quantity >= bulk_discounts.threshold')
     .select('invoice_items.*, (bulk_discounts.percentage_discount * invoice_items.quantity * invoice_items.unit_price) as discount_amount')
-    .order('bulk_discounts.percentage_discount')
+    .order('bulk_discounts.percentage_discount DESC')
   end
-
+  
+  def get_discount
+    invoice_items.joins(:bulk_discounts)
+    .select('invoice_items.*, bulk_discounts.id as discount_id')
+    .order('bulk_discounts.percentage_discount DESC')
+    .where('invoice_items.quantity >= bulk_discounts.threshold')
+  end
+  
   def find_discount(id)
     if apply_discount.where(id: id).empty?
       0
