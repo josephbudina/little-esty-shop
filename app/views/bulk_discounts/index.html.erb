@@ -1,8 +1,9 @@
-<div>
+<h1>Upcoming Holidays:</h1>
+<section id="holiday_api">
   <% @holidays.each do |holiday| %>
   <%= holiday.name %>
   <%= holiday.date %>
-</div>
+</section>
 <% end %>
 <%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant), method: :get %>
 <% @bulk_discounts.each do |discount| %>

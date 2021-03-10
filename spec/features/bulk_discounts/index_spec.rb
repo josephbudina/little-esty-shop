@@ -53,11 +53,11 @@ RSpec.describe "Bulk Discounts Index" do
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discount_1))
   end
 
-  # it 'has head and listed holidays' do
-  #   visit merchant_bulk_discounts_path(@merchant1)
+  it 'has head and listed holidays' do
+    visit merchant_bulk_discounts_path(@merchant1)
 
-  #   expect(page).to have_content("Upcoming Holidays")
-  # end
+    expect(page).to have_content("Upcoming Holidays")
+  end
 
   it 'has link to new discount page' do
     visit merchant_bulk_discounts_path(@merchant1)
