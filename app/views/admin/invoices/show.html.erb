@@ -1,4 +1,7 @@
-Invoice ID: <%= @invoice.id %><br>
+<section class="headers">
+  <h1>Invoice ID: <%= @invoice.id %></h1><br>
+</section>
+<section class="github-stats">
 Inovoice Status: <%= @invoice.status %><br>
                        <div id='status'>
 Update Invoice Status: <%= form_with url: admin_invoice_path(@invoice), method: :patch, local: true do |f| %>
@@ -15,7 +18,6 @@ Unit Price: $<%= invoice_item.unit_price %><br>
 Status: <%= invoice_item.status %><br>
 <% end %><br>
 
-<section class="github-stats">
   <div id="revenue">
     Total Revenue: $<%= @invoice.total_revenue %>
     <% if @invoice.total_revenue != @invoice.discount_revenue %>

@@ -61,52 +61,14 @@ RSpec.describe "Merchant Invoice Show Page" do
           expect(page).to have_content(@invoice1.status_format)
           expect(page).to have_content(@invoice1.date_format)
         end
-      end
     end
+  end
 
-    it "I see all of the customer information related to that invoice " do
-      visit "/merchant/#{@merchant.id}/invoices/#{@invoice1.id}"
-        within "#invoice-customer-info" do
-          expect(page).to have_content(@customer.name)
-          expect(page).to_not have_content(@not_customer.name)
+  it "I see all of the customer information related to that invoice " do
+    visit "/merchant/#{@merchant.id}/invoices/#{@invoice1.id}"
+      within "#invoice-customer-info" do
+        expect(page).to have_content(@customer.name)
+        expect(page).to_not have_content(@not_customer.name)
       end
-    end
-
-    it "Then I see all of my items on the invoice(item name, quantity, price sold, invoice item status)" do
-      visit "/merchant/#{@merchant.id}/invoices/#{@invoice1.id}" do
-        # expect(page).to_not have_content(@not_item.name)
-        # expect(page).to_not have_content(@not_invoice_item.quantity)
-        # expect(page).to_not have_content(@not_invoice_item.unit_price)
-        within "#invoice-items-#{@invoice_item1.id}-info" do
-          expect(page).to have_content(@item1.name)
-          expect(page).to have_content(@invoice_item1.quantity)
-          expect(page).to have_content(@invoice_item1.unit_price)
-          expect(page).to have_content(@invoice_item1.status.titleize)
-        end
-        within "#invoice-items-#{@invoice_item2.id}-info" do
-          expect(page).to have_content(@item2.name)
-          expect(page).to have_content(@invoice_item2.quantity)
-          expect(page).to have_content(@invoice_item2.unit_price)
-          expect(page).to have_content(@invoice_item2.status.titleize)
-        end
-      end
-    end
-
-    it "I see the total revenue that will be generated from all of my items on the invoice" do
-      visit "/merchant/#{@merchant.id}/invoices/#{@invoice1.id}"
-        within "#invoice-total-revenue" do
-          expect(page).to have_content(@invoice1.total_revenue)
-      end
-    end
-
-    it "I see that each invoice item status is a select field and can be updated with a button" do
-      visit "/merchant/#{@merchant.id}/invoices/#{@invoice1.id}"
-        within "#invoice-items-#{@invoice_item1.id}-info" do
-          expect(page).to have_button("Update Item Status")
-          select('Shipped', from: 'status')
-          click_button("Update Item Status")
-          expect(current_path).to eq("/merchant/#{@merchant.id}/invoices/#{@invoice1.id}")
-          expect(page).to have_content('Shipped')
-        end
-      end
+  end
 end

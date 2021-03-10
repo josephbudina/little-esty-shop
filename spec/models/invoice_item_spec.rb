@@ -36,6 +36,48 @@ RSpec.describe InvoiceItem, type: :model do
         expect(@invoice_item2.status).to_not eq("shipped")
       end
     end
+
+    it 'applies discount' do
+      @merchant1 = create(:merchant)
+      @item1 = create(:item, merchant_id: @merchant1.id)
+      @item2 = create(:item, merchant_id: @merchant1.id)
+      @item3 = create(:item, merchant_id: @merchant1.id)
+      @customer1 = create(:customer, first_name: "dan")
+      @customer2 = create(:customer, first_name: "Jim")
+      @invoice_1 = create(:invoice, customer_id: @customer1.id)
+      @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
+      @invoice_item_2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_1.id, status: 0, quantity: 12, unit_price: 60.54)
+      @invoice_item_3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice_1.id, status: 0, quantity: 10, unit_price: 90.7)
+      @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+      @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+      @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+
+      expect(@invoice_item_1.applied).to eq(@bulk_discount_2)
+      expect(@invoice_item_2.applied).to eq(@bulk_discount_3)
+      expect(@invoice_item_3.applied).to eq(@bulk_discount_3)
+    end
+
+    it 'applies discount' do
+      @merchant1 = create(:merchant)
+      @merchant2 = create(:merchant)
+      @item1 = create(:item, merchant_id: @merchant1.id)
+      @item2 = create(:item, merchant_id: @merchant1.id)
+      @item3 = create(:item, merchant_id: @merchant1.id)
+      @item4 = create(:item, merchant_id: @merchant2.id)
+      @customer1 = create(:customer, first_name: "dan")
+      @customer2 = create(:customer, first_name: "Jim")
+      @invoice_1 = create(:invoice, customer_id: @customer1.id)
+      @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
+      @invoice_item_2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_1.id, status: 0, quantity: 12, unit_price: 60.54)
+      @invoice_item_3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice_1.id, status: 0, quantity: 10, unit_price: 90.7)
+      @invoice_item_4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice_1.id, status: 0, quantity: 10, unit_price: 90.7)
+      @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+      @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+      @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+
+      expect(@invoice_item_1.applied_discount).to eq("discount_link")
+      expect(@invoice_item_4.applied_discount).to eq("no_discount")
+    end
   end
 
   describe "class methods" do
