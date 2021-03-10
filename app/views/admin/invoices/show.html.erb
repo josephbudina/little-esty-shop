@@ -14,7 +14,12 @@ Quantity: <%= invoice_item.quantity %><br>
 Unit Price: $<%= invoice_item.unit_price %><br>
 Status: <%= invoice_item.status %><br>
 <% end %><br>
-Total Revenue: $<%= @invoice.total_revenue %>
-<% if @invoice.total_revenue != @invoice.discount_revenue %>
-  Total Revenue With Discounts: $<%= @invoice.discount_revenue %>
-<% end %>
+
+<section class="github-stats">
+  <div id="revenue">
+    Total Revenue: $<%= @invoice.total_revenue %>
+    <% if @invoice.total_revenue != @invoice.discount_revenue %>
+      Total Revenue With Discounts: $<%= @invoice.discount_revenue %>
+    <% end %>
+  </div>
+</section>

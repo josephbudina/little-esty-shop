@@ -7,6 +7,18 @@ describe 'Admin Invoice Show Page' do
     @item1 = create(:item, merchant_id: @merchant.id)
     @item2 = create(:item, merchant_id: @merchant.id)
     @invoice_item1 = create(:invoice_item, invoice_id: @invoice.id, item_id: @item1.id)
+    @bulk_discount_1 = @merchant.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+    @bulk_discount_2 = @merchant.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+    @bulk_discount_3 = @merchant.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+  end
+
+  it 'Sees total revenue includes discounted price' do
+    visit admin_invoice_path(@invoice)
+
+    within("#revenue") do
+      expect(page).to have_content("Total Revenue With Discounts:")
+      expect(page).to have_content("Total Revenue:")
+    end
   end
 
   it 'Sees Invoice and attributes' do
