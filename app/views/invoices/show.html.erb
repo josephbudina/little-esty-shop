@@ -6,6 +6,9 @@
 </section>
 <section id="invoice-total-revenue">
   <p>Total Revenue: $<%= @merchant_invoice.total_revenue %></p>
+  <% if @merchant_invoice.total_revenue !=  @merchant_invoice.discount_revenue %>
+    <p>Bulk Discount Revenue: $<%= @merchant_invoice.discount_revenue %></p>
+  <% end %>
 </section>
 <section id="invoice-customer-info">
   <h2>Customer:</h2>
@@ -29,7 +32,6 @@
           <td><%= form_with url: "/merchant/#{@merchant.id}/invoice_items/#{invoice_item.id}", method: :patch do |form|  %>
             <%= form.select :status, ["Pending", "Packaged", "Shipped"], selected: "#{invoice_item.status.titleize}" %>
             <%= form.button "Update Item Status" %>
-            <%= link_to "Discount", merchant_bulk_discount_path(@merchant, @bulk_discount)%>
           <% end %></td>
         </tr>
     <% end %>

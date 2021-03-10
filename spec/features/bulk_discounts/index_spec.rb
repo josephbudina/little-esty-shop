@@ -76,6 +76,6 @@ RSpec.describe "Bulk Discounts Index" do
       click_link 'Remove This Discount'
     end
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
-    expect(page).to_not have_content(@bulk_discount_1.percentage_discount)
+    expect(page).to_not have_content(@bulk_discount_1)
   end
 end

@@ -11,17 +11,6 @@
 
   <body>
     <section class="github-stats">
-      Repo Name: <%= @repo_names %><br>
-      <hr>
-      Repo Pull Request Count: <%= @repo_pull_count %><br>
-      <hr>
-      <% @repo_contributors.each do |contributor| %>
-        <%= "Contributor #{contributor[0]} has #{contributor[1]} commits" %><br>
-        <hr>
-      <% end %>
-      <% flash.each do |type, message| %>
-        <p><%= message %></p>
-      <% end %>
     </section>
     <%= yield %>
   </body>

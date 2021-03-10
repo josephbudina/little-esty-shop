@@ -1,8 +1,8 @@
-class Repo
-  attr_reader :name,
-              :contributors
+# class Repo
+#   attr_reader :name,
+#               :contributors
 
-  def initialize(repo_data)
-    @name = repo_data[:name]
-  end
-end
+#   def initialize(repo_data)
+#     @name = repo_data[:name]
+#   end
+# end
