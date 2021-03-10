@@ -63,29 +63,55 @@ RSpec.describe Invoice, type: :model do
     describe '#bulk_discount_application' do
       it 'applys bulk discount to items' do
         @merchant1 = create(:merchant)
-  
+
         @item1 = create(:item, merchant_id: @merchant1.id)
         @item2 = create(:item, merchant_id: @merchant1.id)
-        @item8 = create(:item, merchant_id: @merchant1.id)
-      
-      
-        @customers = []
-        15.times {@customers << create(:customer)}
-        @customers.each do |customer|
-          create(:invoice, customer_id: customer.id)
-        end
-      
-        @invoice_1 = @customers.first.invoices.first
-        @invoice_2 = @customers.second.invoices.first
-
+        @item3 = create(:item, merchant_id: @merchant1.id)
+        @customer1 = create(:customer, first_name: "dan")
+        @invoice_1 = create(:invoice, customer_id: @customer1.id)
         @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
-        @invoice_item_2 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_2.id, status: 0, quantity: 12, unit_price: 60.54)
-        @invoice_item_10 = create(:invoice_item, item_id: @item8.id, invoice_id: @invoice_1.id, status: 0, quantity: 1, unit_price: 90.7)
-      
+        @invoice_item_2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_1.id, status: 0, quantity: 12, unit_price: 60.54)
+        @invoice_item_3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice_1.id, status: 0, quantity: 10, unit_price: 90.7)
         @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
         @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
         @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
-        expect(@invoice1.apply_discount).to eq(53.0)
+
+        expect(@invoice_1.apply_discount.uniq).to eq([@invoice_item_1, @invoice_item_2, @invoice_item_3])
+      end
+
+      it 'finds_discount' do
+        @merchant1 = create(:merchant)
+        @item1 = create(:item, merchant_id: @merchant1.id)
+        @item2 = create(:item, merchant_id: @merchant1.id)
+        @item3 = create(:item, merchant_id: @merchant1.id)
+        @customer1 = create(:customer, first_name: "dan")
+        @invoice_1 = create(:invoice, customer_id: @customer1.id)
+        @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
+        @invoice_item_2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_1.id, status: 0, quantity: 12, unit_price: 60.54)
+        @invoice_item_3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice_1.id, status: 0, quantity: 1, unit_price: 90.7)
+        @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+        @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 3)
+        @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+        expect(@invoice_1.find_discount(@invoice_item_3.id)).to eq(0)
+        expect(@invoice_1.find_discount(@invoice_item_1.id)).to eq(50.0)
+      end
+
+      it 'finds discount revenue' do
+        @merchant1 = create(:merchant)
+        @item1 = create(:item, merchant_id: @merchant1.id)
+        @item2 = create(:item, merchant_id: @merchant1.id)
+        @item3 = create(:item, merchant_id: @merchant1.id)
+        @customer1 = create(:customer, first_name: "dan")
+        @customer2 = create(:customer, first_name: "Jim")
+        @invoice_1 = create(:invoice, customer_id: @customer1.id)
+        @invoice_item_1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice_1.id, status: 0, quantity: 5, unit_price: 50.0)
+        @invoice_item_2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice_1.id, status: 0, quantity: 12, unit_price: 60.54)
+        @invoice_item_3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice_1.id, status: 0, quantity: 10, unit_price: 90.7)
+        @bulk_discount_1 = @merchant1.bulk_discounts.create(percentage_discount: 20, threshold: 2)
+        @bulk_discount_2 = @merchant1.bulk_discounts.create(percentage_discount: 30, threshold: 1)
+        @bulk_discount_3 = @merchant1.bulk_discounts.create(percentage_discount: 40, threshold: 10)
+
+        expect(@invoice_1.discount_revenue).to eq(1506.784)
       end
     end
 
@@ -95,6 +121,7 @@ RSpec.describe Invoice, type: :model do
         expect(invoice.date_format).to eq("Thursday, July 18, 2019")
       end
     end
+
     describe "#status_format" do
       it "returns the status with each first letter capitalized for every word" do
         expect(@invoice1.status_format).to eq("In Progress")
@@ -102,6 +129,7 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice3.status_format).to eq("Cancelled")
       end
     end
+
     describe "#total_revenue" do
       it "returns total sum of the invoice_item quanity * invoice_item unit_price " do
         expect(@invoice1.total_revenue.round(2)).to eq(299975.00)
